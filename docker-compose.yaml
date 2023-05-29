@@ -1,0 +1,46 @@
+version: "3"
+services:
+  hub:
+    image: selenium/hub:4.1.0
+    ports:
+      - "4444:4444"
+  chrome:
+    image: selenium/node-chrome:4.1.0
+    shm_size: '2g'        
+    depends_on:
+      - hub
+    environment:
+      - SE_EVENT_BUS_HOST=hub
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+  firefox:
+    image: selenium/node-firefox:4.1.0
+    shm_size: '2g'   
+    depends_on:
+      - hub
+    environment:
+      - SE_EVENT_BUS_HOST=hub
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+  book-flight-module:
+    image: sonir/selenium-docker
+    depends_on:
+      - chrome
+      - firefox
+    environment:
+      - HUB_HOST=hub
+      - BROWSER=chrome
+      - MODULE=testng.xml
+    volumes:
+      - ./output/search-result:/usr/share/docker/test-output    
+  search-module:
+    image: sonir/selenium-docker
+    depends_on:
+      - chrome
+      - firefox
+    environment:
+      - HUB_HOST=hub
+      - BROWSER=firefox
+      - MODULE=searchModule.xml
+    volumes:
+      - ./output/searchModule-result:/usr/share/docker/test-output

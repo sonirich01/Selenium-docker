@@ -1,0 +1,15 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="search-module">
+    <test name="search-page-1">
+        <parameter name="keyword" value="selenium" />
+        <classes>
+            <class name="com.searchmodule.tests.seachPageTest" />
+        </classes>
+    </test>
+    <test name="search-page-2">
+        <parameter name="keyword" value="docker" />
+        <classes>
+           <class name="com.searchmodule.tests.seachPageTest" />
+        </classes>
+    </test> 
+</suite>
